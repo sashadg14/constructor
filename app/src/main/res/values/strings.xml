@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">NavigationDrawerExample</string>
+
+    <string-array name="comands">
+        <item>Добавить</item>
+        <item>Редактировать</item>
+
+    </string-array>
+    <string-array name="orientations">
+        <item>Вертикальное</item>
+        <item>Горизонтальное</item>
+    </string-array>
+
+    <!--MainActivity-->
+    <string name="orientation_choose_dialog">Выберите положение</string>
+
+</resources>

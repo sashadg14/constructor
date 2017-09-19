@@ -1,0 +1,24 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- Joystick -->
+
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="ambilwarna_hsvHeight">240dp</dimen>
+    <dimen name="ambilwarna_hsvWidth">240dp</dimen>
+    <dimen name="ambilwarna_hueWidth">30dp</dimen>
+    <dimen name="ambilwarna_spacer">8dp</dimen>
+    <dimen name="ambilwarna_marginTop">50dp</dimen>
+
+
+    <dimen name="ambilwarna_button_margin">2dp</dimen>
+    <dimen name="ambilwarna_color_width">60dp</dimen>
+    <dimen name="ambilwarna_color_height">30dp</dimen>
+
+    <!--settings menu-->
+    <dimen name="rel_lay_marginsButtom">10dp</dimen>
+    <dimen name="bottons_marginLeft">20dp</dimen>
+</resources>
