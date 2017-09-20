@@ -79,12 +79,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/button21"
+                        android:layout_margin="3dp"
                         android:layout_weight="1" />
 
                     <Button
                         android:text="Btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
                         android:id="@+id/button22"
                         android:layout_weight="1" />
                 </LinearLayout>
@@ -118,6 +120,7 @@
                         android:text="Btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
                         android:id="@+id/button31"
                         android:layout_weight="1" />
 
@@ -125,12 +128,14 @@
                         android:text="Btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
                         android:id="@+id/button32"
                         android:layout_weight="1" />
                     <Button
                         android:text="Btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
                         android:id="@+id/button33"
                         android:layout_weight="1" />
                 </LinearLayout>
@@ -164,6 +169,7 @@
                         android:text="Btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
                         android:id="@+id/button41"
                         android:layout_weight="1" />
 
@@ -171,18 +177,21 @@
                         android:text="Btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
                         android:id="@+id/button42"
                         android:layout_weight="1" />
                     <Button
                         android:text="Btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
                         android:id="@+id/button43"
                         android:layout_weight="1" />
                     <Button
                         android:text="Btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
                         android:id="@+id/button44"
                         android:layout_weight="1" />
                 </LinearLayout>

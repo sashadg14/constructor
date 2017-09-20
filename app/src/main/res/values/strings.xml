@@ -4,8 +4,27 @@
     <string-array name="comands">
         <item>Добавить</item>
         <item>Редактировать</item>
-
     </string-array>
+
+    <string-array name="comands_redacting">
+        <item>Изменить размер</item>
+        <item>Изменить позицию</item>
+        <item>Изменить текст</item>
+        <item>Изменить цвет</item>
+        <item>Изменить команду</item>
+        <item>Удалить</item>
+    </string-array>
+
+    <string-array name="comands_redacting2">
+        <item>Изменить ориентацию</item>
+        <item>Изменить размер</item>
+        <item>Изменить позицию</item>
+        <item>Изменить текст</item>
+        <item>Изменить цвет</item>
+        <item>Изменить команду</item>
+        <item>Удалить</item>
+    </string-array>
+
     <string-array name="orientations">
         <item>Вертикальное</item>
         <item>Горизонтальное</item>

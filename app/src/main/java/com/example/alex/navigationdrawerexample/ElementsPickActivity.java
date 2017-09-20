@@ -41,7 +41,7 @@ public class ElementsPickActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View v) {
-        Intent intent=new Intent(ElementsPickActivity.this,MainActivity.class);
+        Intent intent=new Intent(ElementsPickActivity.this,ElementCreatingActivity.class);
         switch (v.getId()){
             case R.id.checkBox1:
                 intent.putExtra("element","button1");
