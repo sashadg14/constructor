@@ -6,10 +6,5 @@
 
         </shape>
     </item>
-    <item
-        android:drawable="@drawable/text_icon"
-        android:bottom="8dp"
-        android:left="8dp"
-        android:right="8dp"
-        android:top="8dp"/>
+
 </layer-list>

@@ -88,7 +88,7 @@ public class ElementCreatingActivity extends AppCompatActivity{
                         break;
                     case 1: elementsCreator.clickPositionChanging(newView);
                         break;
-                    case 2: elementsCreator.createTextEnteringDialog(newView);
+                    case 2: elementsCreator.createTextEnteringDialog(newView,1,0);
                         break;
                     case 3: elementsCreator.chooseColorDialog(newView);
                         break;
@@ -109,7 +109,7 @@ public class ElementCreatingActivity extends AppCompatActivity{
                         break;
                     case 1: new JoysticChanger(layout,ElementCreatingActivity.this).clickPositionChanging(newView);
                         break;
-                    case 2: elementsCreator.createTextEnteringDialog(newView);
+                    case 2: //elementsCreator.createTextEnteringDialog(newView);
                         break;
                     case 3: elementsCreator.chooseColorDialog(newView);
                         break;
@@ -133,7 +133,7 @@ public class ElementCreatingActivity extends AppCompatActivity{
                         break;
                     case 2:elementsCreator.clickPositionChanging(newView);
                         break;
-                    case 3: elementsCreator.createTextEnteringDialog(newView);
+                    case 3: elementsCreator.createTextEnteringDialog(newView,((LinearLayout)newView).getChildCount(),0);
                         break;
                     case 4: elementsCreator.chooseColorDialog(newView);
                         break;

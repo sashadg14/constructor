@@ -167,21 +167,25 @@ public class ElementsCreator {
         textView.setText("Потяните чтобы изменить размер");
     }
 
-    public void createTextEnteringDialog(final View newView) {
+    public void createTextEnteringDialog(final View newView, final int count, final int totalIndex) {
 /* Alert Dialog Code Start*/
         setNullTochListeners(newView);
         AlertDialog.Builder alert = new AlertDialog.Builder(activity);
         alert.setTitle("Введите название"); //Set Alert dialog title here
-
         // Set an EditText view to get user input
         final EditText input = new EditText(activity);
+        input.setText(((Button)((LinearLayout)newView).getChildAt(totalIndex)).getText().toString());
         alert.setView(input);
 
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 //You will get as string input data in this variable.
                 // here we convert the input to a string and show in a toast.
-                ((Button)newView).setText(input.getText().toString());
+                ((Button)((LinearLayout)newView).getChildAt(totalIndex)).setText(input.getText().toString());
+                if(count>1&&count<=4&&totalIndex+1<count){
+                    dialog.cancel();
+                    createTextEnteringDialog(newView,count,totalIndex+1);
+                }
                 ((TextView)activity.findViewById(R.id.textView)).setText("Нажмите \"назад\" чтобы сохранить");
                 //Toast.makeText(MainActivity.this,srt,Toast.LENGTH_LONG).show();
             } // End of onClick(DialogInterface dialog, int whichButton)
