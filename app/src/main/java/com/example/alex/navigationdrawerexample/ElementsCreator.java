@@ -2,7 +2,17 @@ package com.example.alex.navigationdrawerexample;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.StateListDrawable;
+import android.os.Handler;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -12,7 +22,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.alex.navigationdrawerexample.models.ButtonConstruct;
+import com.example.alex.navigationdrawerexample.color_picker.AmbilWarnaDialogFragment;
+import com.example.alex.navigationdrawerexample.color_picker.OnAmbilWarnaListener;
+import com.example.alex.navigationdrawerexample.models.SeveralButtonsConstruct;
 
 /**
  * Created by alex on 18.09.2017.
@@ -23,6 +35,7 @@ public class ElementsCreator {
    // View newView;
     Activity activity;
     TextView textView;
+    int colour=-65696;
     public ElementsCreator(RelativeLayout layout, Activity activity) {
         this.layout = layout;
         //this.newView = newView;
@@ -30,39 +43,38 @@ public class ElementsCreator {
         this.activity = activity;
     }
 
-    public Button createButton(){
-        Button newView=new Button(activity);
-        ((Button)newView).setText("btn");
-        final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(100, 100);
-        //button.setBackgroundDrawable(makeSelector(dataBaseReader.getColourButtons()));
-        newView.setLayoutParams(params);
-        layout.addView(newView);
-
-        return newView;
-    }
-
-    public View create2Buttons(){
-        final View newView=activity.getLayoutInflater().inflate(R.layout.button2,null);
-        final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 100);
-        //button.setBackgroundDrawable(makeSelector(dataBaseReader.getColourButtons()));
-        newView.setLayoutParams(params);
-        layout.addView(newView);
-        return newView;
-    }
-
-    public View create3Buttons(){
-        final View newView=activity.getLayoutInflater().inflate(R.layout.button3,null);
+    public View createButtons(int col){
+        View newView = null;
+        switch (col){
+            case 1:
+                newView=activity.getLayoutInflater().inflate(R.layout.button1,null);
+                break;
+            case 2:
+                newView=activity.getLayoutInflater().inflate(R.layout.button2,null);
+                break;
+            case 3:
+                newView=activity.getLayoutInflater().inflate(R.layout.button3,null);
+                break;
+            case 4:
+                newView=activity.getLayoutInflater().inflate(R.layout.button4,null);
+                break;
+        }
         final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(300, 100);
         //button.setBackgroundDrawable(makeSelector(dataBaseReader.getColourButtons()));
         newView.setLayoutParams(params);
+        for (int i=0;i<((LinearLayout)newView).getChildCount();i++){
+            ((LinearLayout)newView).getChildAt(i).setBackgroundDrawable(makeSelector(colour));
+            ((LinearLayout)newView).getChildAt(i).setClickable(false);
 
-        layout.addView(newView);
+        }
+        layout.addView(newView,layout.getChildCount()-1);
+        newView.setBackgroundResource(R.drawable.red_shape);
         return newView;
     }
 
-    public View create4Buttons(){
-        final View newView=activity.getLayoutInflater().inflate(R.layout.button4,null);
-        final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(300, 100);
+    public View createJoy(){
+        View newView =activity.getLayoutInflater().inflate(R.layout.joystic,null);
+        final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(400, 400);
         //button.setBackgroundDrawable(makeSelector(dataBaseReader.getColourButtons()));
         newView.setLayoutParams(params);
 
@@ -113,7 +125,7 @@ public class ElementsCreator {
 
           textView.setText("Перетащите элемент");
     }
-    private void setNullTochListeners(View newView){
+    public void setNullTochListeners(View newView){
         layout.setOnTouchListener(null);
         newView.setOnTouchListener(null);
         try {
@@ -210,4 +222,63 @@ public class ElementsCreator {
         builder.create().show();
     }
 
+    public void chooseColorDialog(final View newView){
+        final int colour=-65696;
+        System.out.println("fsdakjhhfdslkdasfnkdshlfkasdfnkashnfaksd");
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                OnAmbilWarnaListener onAmbilWarnaListener = new OnAmbilWarnaListener() {
+                    @Override
+                    public void onCancel(AmbilWarnaDialogFragment dialogFragment) {
+                        Log.d("TAG", "onCancel()");
+                    }
+
+                    @Override
+                    public void onOk(AmbilWarnaDialogFragment dialogFragment,int color) {
+                        System.out.println(color);
+                        ElementsCreator.this.colour=color;
+                        for (int i=0;i<((LinearLayout)newView).getChildCount();i++){
+                            ((LinearLayout)newView).getChildAt(i).setBackgroundDrawable(makeSelector(color));
+
+                        }
+
+                    }
+                };
+
+                // create new instance of AmbilWarnaDialogFragment and set OnAmbilWarnaListener listener to it
+                // show dialog fragment with some tag value
+                FragmentTransaction ft = ((AppCompatActivity)activity).getSupportFragmentManager().beginTransaction();
+                AmbilWarnaDialogFragment fragment = AmbilWarnaDialogFragment.newInstance(colour);
+                fragment.setOnAmbilWarnaListener(onAmbilWarnaListener);
+                System.out.println("fsdakjhhfdslkdasfnkdshlfkasdfnkashnfaksd");
+                fragment.show(ft, "color_picker_dialog");
+            }
+        },10);
+    }
+    private StateListDrawable makeSelector(int color) {
+        final GradientDrawable shape = new GradientDrawable();
+        shape.setShape(GradientDrawable.RECTANGLE);
+        shape.setColor(color);
+        shape.setCornerRadius(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, activity.getResources().getDisplayMetrics()));
+
+        LayerDrawable layerDrawable = new LayerDrawable(new Drawable[]{shape});
+
+        GradientDrawable shape2 = new GradientDrawable();
+        shape2.setShape(GradientDrawable.RECTANGLE);
+        shape2.setColor(color-10000);
+        shape2.setCornerRadius(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, activity.getResources().getDisplayMetrics()));
+
+
+        StateListDrawable res = new StateListDrawable();
+
+        res.addState(new int[]{android.R.attr.state_pressed}, shape2);
+        res.addState(new int[]{}, layerDrawable);
+        return res;
+    }
+
+    public int getColour() {
+        return colour;
+    }
 }

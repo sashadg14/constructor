@@ -517,6 +517,9 @@ public class JoysticView extends View
         return mEnabled;
     }
 
+    public void setmEnabled(boolean mEnabled) {
+        this.mEnabled = mEnabled;
+    }
 
     /**
      * Return the size of the button (as a ratio of the total width/height)

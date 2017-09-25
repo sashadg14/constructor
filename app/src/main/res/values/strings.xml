@@ -6,6 +6,13 @@
         <item>Редактировать</item>
     </string-array>
 
+
+    <string name="hue_view_content_desc">Hue image</string>
+    <string name="hue_cursor_content_desc">Hue image cursor</string>
+    <string name="color_picker_content_desc">Color picker image</string>
+    <string name="arrow_content_desc">Arrow image</string>
+
+
     <string-array name="comands_redacting">
         <item>Изменить размер</item>
         <item>Изменить позицию</item>
@@ -21,6 +28,15 @@
         <item>Изменить позицию</item>
         <item>Изменить текст</item>
         <item>Изменить цвет</item>
+        <item>Изменить команду</item>
+        <item>Удалить</item>
+    </string-array>
+
+    <string-array name="comands_joy">
+        <item>Изменить размер</item>
+        <item>Изменить позицию</item>
+        <item>Изменить цвет границ</item>
+        <item>Изменить цвет центра</item>
         <item>Изменить команду</item>
         <item>Удалить</item>
     </string-array>

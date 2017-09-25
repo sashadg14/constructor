@@ -8,4 +8,9 @@
     <color name="colorViolet">#ac97cc</color>
     <color name="colorViolet2">#72608c</color>
 
+
+
+    <color name="prev_color">#FFAAAA</color>
+    <color name="new_color">#AAAAFF</color>
+
 </resources>

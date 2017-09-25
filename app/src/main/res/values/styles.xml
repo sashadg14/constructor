@@ -23,4 +23,10 @@
         <item name="android:layout_height">match_parent</item>
     </style>
 
+
+    <style name="AppCompatDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">#FFFFFF</item>
+        <item name="android:textColorPrimary">#232323</item>
+        <item name="android:background">#FFFFFF</item>
+    </style>
 </resources>
