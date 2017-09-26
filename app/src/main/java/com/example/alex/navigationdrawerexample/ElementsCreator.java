@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
@@ -20,11 +19,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.alex.navigationdrawerexample.color_picker.AmbilWarnaDialogFragment;
 import com.example.alex.navigationdrawerexample.color_picker.OnAmbilWarnaListener;
-import com.example.alex.navigationdrawerexample.models.SeveralButtonsConstruct;
 
 /**
  * Created by alex on 18.09.2017.
@@ -36,6 +33,7 @@ public class ElementsCreator {
     Activity activity;
     TextView textView;
     int colour=-65696;
+    private String[] comands;
     public ElementsCreator(RelativeLayout layout, Activity activity) {
         this.layout = layout;
         //this.newView = newView;
@@ -43,7 +41,14 @@ public class ElementsCreator {
         this.activity = activity;
     }
 
+    public String[] getComands() {
+        return comands;
+    }
+
     public View createButtons(int col){
+        comands =new String[col];
+        for(int i=0;i<col;i++)
+        comands[i]="";
         View newView = null;
         switch (col){
             case 1:
@@ -72,56 +77,33 @@ public class ElementsCreator {
         return newView;
     }
 
-    public View createJoy(){
-        View newView =activity.getLayoutInflater().inflate(R.layout.joystic,null);
-        final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(400, 400);
-        //button.setBackgroundDrawable(makeSelector(dataBaseReader.getColourButtons()));
-        newView.setLayoutParams(params);
-
-        layout.addView(newView);
-        return newView;
-    }
-
 
     public void clickPositionChanging(final View newView){
 
         final View finalNewView = newView;
-        final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(newView.getWidth(), newView.getHeight());
         layout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                params.setMargins((int) event.getX()- finalNewView.getWidth()/2,(int) event.getY()- finalNewView.getHeight()/2,0,0);
-                finalNewView.setLayoutParams(params);
+                //params.setMargins((int) event.getX()- finalNewView.getWidth()/2,(int) event.getY()- finalNewView.getHeight()/2,0,0);
+                finalNewView.setX(event.getX()- finalNewView.getWidth()/2);
+                finalNewView.setY(event.getY()- finalNewView.getHeight()/2);
                 /*MainActivity.this.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(),SystemClock.uptimeMillis(),MotionEvent.ACTION_DOWN,
                         (int) event.getX()-newView.getWidth()/2,(int) event.getY()-newView.getHeight()/2,0));*/
                 return true;
             }
         });
-        final View finalNewView1 = newView;
-        try {
             final LinearLayout linearLayout=(LinearLayout)newView;
             for (int i=0;i<linearLayout.getChildCount();i++){
                 final int finalI = i;
                 linearLayout.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
-                        params.setMargins((int)( event.getX()- linearLayout.getChildAt(finalI).getWidth()/2+ newView.getX()),(int)( event.getY()- linearLayout.getChildAt(finalI).getHeight()/2+ newView.getY()),0,0);
-                        newView.setLayoutParams(params);
+                        newView.setX( event.getX()- linearLayout.getChildAt(finalI).getWidth()/2+ newView.getX());
+                        newView.setY(event.getY()- linearLayout.getChildAt(finalI).getHeight()/2+ newView.getY());
                         return false;
                     }
                 });
             }
-        }
-        catch (Exception e){
-            newView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    params.setMargins((int)( event.getX()- finalNewView1.getWidth()/2+ finalNewView1.getX()),(int)( event.getY()- finalNewView1.getHeight()/2+ finalNewView1.getY()),0,0);
-                    finalNewView1.setLayoutParams(params);
-                    return false;
-                }
-            });
-        }
 
           textView.setText("Перетащите элемент");
     }
@@ -141,26 +123,25 @@ public class ElementsCreator {
     public void proportionsChanging(final View newView){
         final View finalNewView = newView;
         setNullTochListeners(newView);
-        final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(newView.getHeight(), newView.getWidth());
-        params.setMargins((int) newView.getX(),(int)newView.getY(),0,0);
+        final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(newView.getWidth(), newView.getHeight());
+
         layout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 params.width= (int) (event.getX()- newView.getX());
                 params.height= (int) (event.getY()- newView.getY());
-                finalNewView.setLayoutParams(params);
+                newView.setLayoutParams(params);
                 /*MainActivity.this.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(),SystemClock.uptimeMillis(),MotionEvent.ACTION_DOWN,
                         (int) event.getX()-newView.getWidth()/2,(int) event.getY()-newView.getHeight()/2,0));*/
                 return true;
             }
         });
-        final View finalNewView1 = newView;
         newView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 params.width= (int) (event.getX()- newView.getX());
                 params.height= (int) (event.getY()- newView.getY());
-                finalNewView.setLayoutParams(params);
+                newView.setLayoutParams(params);
                 return false;
             }
         });
@@ -202,6 +183,41 @@ public class ElementsCreator {
        /* Alert Dialog Code End*/
         //Toast.makeText(getApplication(),"Введите название",Toast.LENGTH_LONG).show();
     }
+    public void createComandEditingDialog(final View newView, final int count, final int totalIndex) {
+/* Alert Dialog Code Start*/
+        setNullTochListeners(newView);
+        AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+        alert.setTitle("Введите название"); //Set Alert dialog title here
+        // Set an EditText view to get user input
+        final EditText input = new EditText(activity);
+        input.setText(comands[totalIndex]);
+        alert.setView(input);
+
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //You will get as string input data in this variable.
+                // here we convert the input to a string and show in a toast.
+                comands[totalIndex]=(input.getText().toString());
+                if(count>1&&count<=4&&totalIndex+1<count){
+                    dialog.cancel();
+                    createComandEditingDialog(newView,count,totalIndex+1);
+                }
+                ((TextView)activity.findViewById(R.id.textView)).setText("Нажмите \"назад\" чтобы сохранить");
+                //Toast.makeText(MainActivity.this,srt,Toast.LENGTH_LONG).show();
+            } // End of onClick(DialogInterface dialog, int whichButton)
+        }); //End of alert.setPositiveButton
+        alert.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                ((TextView)activity.findViewById(R.id.textView)).setText("Нажмите \"назад\" чтобы сохранить");
+                dialog.cancel();
+            }
+        }); //End of alert.setNegativeButton
+        AlertDialog alertDialog = alert.create();
+        alertDialog.show();
+        ((TextView)activity.findViewById(R.id.textView)).setText("Изменение команды");
+       /* Alert Dialog Code End*/
+        //Toast.makeText(getApplication(),"Введите название",Toast.LENGTH_LONG).show();
+    }
 
     public void chooseOrintationDialog(final View newView){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -228,7 +244,6 @@ public class ElementsCreator {
 
     public void chooseColorDialog(final View newView){
         final int colour=-65696;
-        System.out.println("fsdakjhhfdslkdasfnkdshlfkasdfnkashnfaksd");
         new Handler().postDelayed(new Runnable() {
 
             @Override

@@ -223,6 +223,8 @@ public class JoysticView extends View
      *        access the current theme, resources, etc.
      * @param attrs The attributes of the XML tag that is inflating the JoystickView.
      */
+    int buttonColor;
+    int borderColor;
     public JoysticView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -232,8 +234,7 @@ public class JoysticView extends View
                 0, 0
         );
 
-        int buttonColor;
-        int borderColor;
+
         int backgroundColor;
         int borderWidth;
         Drawable buttonDrawable;
@@ -594,6 +595,7 @@ public class JoysticView extends View
      */
     public void setButtonColor(int color) {
         mPaintCircleButton.setColor(color);
+        buttonColor=color;
         invalidate();
     }
 
@@ -604,7 +606,16 @@ public class JoysticView extends View
      */
     public void setBorderColor(int color) {
         mPaintCircleBorder.setColor(color);
+        borderColor=color;
         invalidate();
+    }
+    public int getBorderColor() {
+        System.out.println(borderColor);
+        return borderColor;
+
+    }
+    public int getButtonColor() {
+        return buttonColor;
     }
 
 

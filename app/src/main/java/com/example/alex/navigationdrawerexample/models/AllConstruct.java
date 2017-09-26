@@ -13,19 +13,22 @@ import java.util.ArrayList;
  */
 
 public class AllConstruct implements Serializable{
-    ArrayList<SeveralButtonsConstruct> buttonsConstructs;
+    ArrayList<ViewConstructor> buttonsConstructs;
 
-    public AllConstruct() {
-        ArrayList<SeveralButtonsConstruct> arrayList= new ArrayList<>();
-    }
-    public void addNewConstruct(SeveralButtonsConstruct buttonsConstruct){
+    public AllConstruct(){}
+    public void addNewConstruct(ViewConstructor viewConstructor){
         if(buttonsConstructs==null)
         buttonsConstructs=new ArrayList<>();
-        buttonsConstructs.add(buttonsConstruct);
+        buttonsConstructs.add(viewConstructor);
+    }
 
+    public void createScreen(RelativeLayout layout, MainActivity activity){
+        for(ViewConstructor viewConstructor: buttonsConstructs)
+        layout.addView(viewConstructor.createElementInMainScreen(activity));
     }
-    public void createScreen(RelativeLayout layout, Activity activity){
-        for(SeveralButtonsConstruct buttonsConstruct: buttonsConstructs)
-        layout.addView(buttonsConstruct.createElement(activity));
+    public void createCreatingScreen(RelativeLayout layout, Activity activity){
+        for(ViewConstructor viewConstructor: buttonsConstructs)
+        layout.addView(viewConstructor.createElementInCreatingScreen(activity));
     }
+
 }

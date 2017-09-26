@@ -1,19 +1,12 @@
 package com.example.alex.navigationdrawerexample;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.StateListDrawable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,7 +18,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.alex.navigationdrawerexample.models.AllConstruct;
-import com.example.alex.navigationdrawerexample.models.SeveralButtonsConstruct;
+import com.example.alex.navigationdrawerexample.models.JoysticConstructor;
+import com.example.alex.navigationdrawerexample.models.SeveralButtonsConstructor;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -36,12 +30,14 @@ public class ElementCreatingActivity extends AppCompatActivity{
     private String[] listTitles;
     private ListView mDrawerListView;
     private View newView;
-    SeveralButtonsConstruct severalButtonsConstruct;
+    SeveralButtonsConstructor severalButtonsConstructor;
     private ElementsCreator elementsCreator;
+    private JoysticChanger joysticChanger;
     RelativeLayout relativeLayoutToolbar;
     RelativeLayout layout;
     private String element="";
     AllConstruct construct;
+
     private final String elButton1="button1",elButton2="button2",elButton3="button3",elButton4="button4",elJoy="joy",elBtnJoy="btn_joy";
 
     @Override
@@ -53,7 +49,8 @@ public class ElementCreatingActivity extends AppCompatActivity{
         relativeLayoutToolbar =(RelativeLayout)findViewById(R.id.rel_tollbar);
         layout =(RelativeLayout) findViewById(R.id.rel_screen);
 
-        elementsCreator=new ElementsCreator(layout,this);
+
+
         element=this.getIntent().getStringExtra("element");
 
         createElement();
@@ -67,14 +64,40 @@ public class ElementCreatingActivity extends AppCompatActivity{
             ObjectInputStream si = new ObjectInputStream(bi);
             construct=(AllConstruct) si.readObject();
             //ButtonConstruct buttonConstruct = (ButtonConstruct) si.readObject();
-            //  layout.addView(buttonConstruct.createElement(MainActivity.this));
+            //  layout.addView(buttonConstruct.createElementInMainScreen(MainActivity.this));
 
-            construct.createScreen(layout,ElementCreatingActivity.this);
+            construct.createCreatingScreen(layout,ElementCreatingActivity.this);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
         ((TextView)findViewById(R.id.textView)).setText("Потяните вправо чтобы открыть меню");
+        cr();
+    }
+    private void cr(){
+        Button button=(Button)findViewById(R.id.button5);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveInFile();
+                startActivity(new Intent(ElementCreatingActivity.this,MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK));
+                finish();
+            }
+        });
+    }
+
+
+    //Как раз эта функция и будет вызываться
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     private void createDrawer(){
@@ -83,6 +106,7 @@ public class ElementCreatingActivity extends AppCompatActivity{
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 switch (position) {
                     case 0:elementsCreator.proportionsChanging(newView);
                         break;
@@ -92,26 +116,31 @@ public class ElementCreatingActivity extends AppCompatActivity{
                         break;
                     case 3: elementsCreator.chooseColorDialog(newView);
                         break;
+                    case 4: elementsCreator.createComandEditingDialog(newView,1,0);;
+                        break;
                 }
                 ((DrawerLayout)findViewById(R.id.drawer_layout)).closeDrawers();
             }
         });
         mDrawerListView.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, listTitles));
     }
+
     private void createDrawerForJoy(){
         listTitles = getResources().getStringArray(R.array.comands_joy);
         mDrawerListView = (ListView) findViewById(R.id.left_drawer);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                ((JoysticView)newView).setEnabled(false);
                 switch (position) {
-                    case 0:elementsCreator.proportionsChanging(newView);
+                    case 0:joysticChanger.proportionsChanging(newView);
                         break;
-                    case 1: new JoysticChanger(layout,ElementCreatingActivity.this).clickPositionChanging(newView);
+                    case 1: joysticChanger.clickPositionChanging(newView);
                         break;
-                    case 2: //elementsCreator.createTextEnteringDialog(newView);
+                    case 2: joysticChanger.chooseBorderColorDialog(newView);
                         break;
-                    case 3: elementsCreator.chooseColorDialog(newView);
+                    case 3: joysticChanger.chooseButtonColorDialog(newView);
                         break;
                 }
                 ((DrawerLayout)findViewById(R.id.drawer_layout)).closeDrawers();
@@ -136,6 +165,8 @@ public class ElementCreatingActivity extends AppCompatActivity{
                     case 3: elementsCreator.createTextEnteringDialog(newView,((LinearLayout)newView).getChildCount(),0);
                         break;
                     case 4: elementsCreator.chooseColorDialog(newView);
+                        break;
+                    case 5: elementsCreator.createComandEditingDialog(newView,((LinearLayout)newView).getChildCount(),0);;
                         break;
                     /*case 1:
                     case 1:
@@ -175,30 +206,35 @@ public class ElementCreatingActivity extends AppCompatActivity{
         });*/
         switch (element){
             case elButton1:
-                newView= new ElementsCreator(layout,ElementCreatingActivity.this).createButtons(1);
-                severalButtonsConstruct=new SeveralButtonsConstruct(1);
+                elementsCreator=new ElementsCreator(layout,ElementCreatingActivity.this);
+                newView= elementsCreator.createButtons(1);
+                severalButtonsConstructor =new SeveralButtonsConstructor(1);
                 createDrawer();
                 break;
             case elButton2:
-                 newView= new ElementsCreator(layout,ElementCreatingActivity.this).createButtons(2);
-                severalButtonsConstruct=new SeveralButtonsConstruct(2);
+                elementsCreator=new ElementsCreator(layout,ElementCreatingActivity.this);
+                newView= elementsCreator.createButtons(2);
+                severalButtonsConstructor =new SeveralButtonsConstructor(2);
                 createDrawer2();
                 break;
             case elButton3:
-                 newView= new ElementsCreator(layout,ElementCreatingActivity.this).createButtons(3);
-                severalButtonsConstruct=new SeveralButtonsConstruct(3);
+                elementsCreator=new ElementsCreator(layout,ElementCreatingActivity.this);
+                newView= elementsCreator.createButtons(3);
+                severalButtonsConstructor =new SeveralButtonsConstructor(3);
                 createDrawer2();
                 break;
             case elButton4:
-                 newView= new ElementsCreator(layout,ElementCreatingActivity.this).createButtons(4);
-                severalButtonsConstruct=new SeveralButtonsConstruct(4);
+                elementsCreator=new ElementsCreator(layout,ElementCreatingActivity.this);
+                newView= elementsCreator.createButtons(4);
+                severalButtonsConstructor =new SeveralButtonsConstructor(4);
                 createDrawer2();
                 break;
             case elJoy:
-                 newView= new ElementsCreator(layout,ElementCreatingActivity.this).createJoy();
+                joysticChanger=new JoysticChanger(layout,ElementCreatingActivity.this);
+                newView= joysticChanger.createJoy();
                  newView.setClickable(false);
                 createDrawerForJoy();
-                //severalButtonsConstruct=new SeveralButtonsConstruct(4);
+                //severalButtonsConstructor=new SeveralButtonsConstructor(4);
                 break;
         }
 
@@ -211,11 +247,14 @@ public class ElementCreatingActivity extends AppCompatActivity{
             newView.setOnTouchListener(null);
             if( !((TextView)findViewById(R.id.textView)).getText().toString().equalsIgnoreCase("Нажмите \"назад\" чтобы сохранить")) {
                 ((TextView)findViewById(R.id.textView)).setText("Нажмите \"назад\" чтобы сохранить");
+                if(element.equalsIgnoreCase(elJoy))
+                ((JoysticView)newView).setEnabled(true);
+                if(joysticChanger==null)
                 elementsCreator.setNullTochListeners(newView);
                 return false;
             }else {
-                saveInFile();
                 startActivity(new Intent(ElementCreatingActivity.this,MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK));
+                finish();
             }
         }
         return super.onKeyDown(keyCode, event);
@@ -227,8 +266,10 @@ public class ElementCreatingActivity extends AppCompatActivity{
 
         if(construct==null)
             construct=new AllConstruct();
+        if (severalButtonsConstructor!=null)
         construct.addNewConstruct(sevBtnConstr());
-
+        if(joysticChanger!=null)
+        construct.addNewConstruct(joyConstr());
         try {
             ByteArrayOutputStream bo = new ByteArrayOutputStream();
             ObjectOutputStream so = new ObjectOutputStream(bo);
@@ -247,18 +288,32 @@ public class ElementCreatingActivity extends AppCompatActivity{
         ed.commit();
     }
 
-    public SeveralButtonsConstruct sevBtnConstr(){
-        RelativeLayout.LayoutParams params=(RelativeLayout.LayoutParams)newView.getLayoutParams();
-        severalButtonsConstruct.setHeight(params.height);
-        severalButtonsConstruct.setWidth(params.width);
-        severalButtonsConstruct.setPaddingLeft(params.leftMargin);
-        severalButtonsConstruct.setPaddingTop(params.topMargin);
-        severalButtonsConstruct.setOrientation(((LinearLayout)newView).getOrientation());
+    public SeveralButtonsConstructor sevBtnConstr(){
+        //RelativeLayout.LayoutParams params=(RelativeLayout.LayoutParams)newView.getLayoutParams();
+        severalButtonsConstructor.setHeight(newView.getHeight());
+        severalButtonsConstructor.setWidth(newView.getWidth());
+        severalButtonsConstructor.setX(newView.getX());
+        severalButtonsConstructor.setY(newView.getY());
+        severalButtonsConstructor.setOrientation(((LinearLayout)newView).getOrientation());
         String[] strings=new String[((LinearLayout) newView).getChildCount()];
         for(int i=0;i<((LinearLayout) newView).getChildCount();i++)
             strings[i]=((Button)((LinearLayout) newView).getChildAt(i)).getText().toString();
-            severalButtonsConstruct.setText(strings);
-        severalButtonsConstruct.setColor(elementsCreator.getColour());
-        return severalButtonsConstruct;
+            severalButtonsConstructor.setText(strings);
+        severalButtonsConstructor.setColor(elementsCreator.getColour());
+        severalButtonsConstructor.setComand(elementsCreator.getComands());
+        return severalButtonsConstructor;
+    }
+
+    public JoysticConstructor joyConstr(){
+        //RelativeLayout.LayoutParams params=(RelativeLayout.LayoutParams)newView.getLayoutParams();
+        JoysticConstructor joysticConstructor=new JoysticConstructor();
+        joysticConstructor.setHeight(newView.getHeight());
+        joysticConstructor.setWidth(newView.getWidth());
+        joysticConstructor.setX(newView.getX());
+        joysticConstructor.setY(newView.getY());
+        joysticConstructor.setBorderColour(((JoysticView)newView).getBorderColor());
+        joysticConstructor.setButtonColour(((JoysticView)newView).getButtonColor());
+        return joysticConstructor;
+        //return joysticChanger.getJoysticConstructor();
     }
 }

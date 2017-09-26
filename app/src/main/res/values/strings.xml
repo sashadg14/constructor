@@ -2,7 +2,7 @@
     <string name="app_name">NavigationDrawerExample</string>
 
     <string-array name="comands">
-        <item>Добавить</item>
+        <item>Добавить и редактировать элемент</item>
         <item>Редактировать</item>
     </string-array>
 
